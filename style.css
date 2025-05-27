@@ -7,23 +7,23 @@
     --border-color: #4a4a6e;
     --glow-color: #00ff8c;
     --font-futuristic: 'Orbitron', sans-serif;
+    --mobile-padding: 15px; /* モバイル用余白変数 */
 }
 
 body {
     font-family: var(--font-futuristic);
-    margin: 20px; /* 元のCSSを参考に、bodyに余白を設定 */
-    padding: 0; /* paddingは0のまま */
+    margin: 20px; /* デスクトップ時の全体余白 */
+    padding: 0;
     background: linear-gradient(135deg, var(--background-dark), var(--background-light));
     color: var(--text-color-light);
     position: relative;
     overflow-x: hidden;
-    /* min-heightは不要。marginとcontainerのmax-width/marginでスクロールと中央寄せを管理 */
-    /* display: flexなどは削除し、元のCSSのmargin:autoによる中央寄せを主にする */
+    box-sizing: border-box;
 }
 
 body::before {
     content: '';
-    position: fixed; /* 画面に固定 */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -45,16 +45,16 @@ body::before {
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 40px; /* コンテナ内部のパディング */
+    padding: 40px; /* デスクトップ時のコンテナ内部パディング */
     box-shadow: 0 0 30px rgba(0, 230, 118, 0.3), 0 0 60px rgba(0, 176, 255, 0.2);
-    max-width: 600px; /* コンテナの最大幅 */
-    width: calc(100% - 40px); /* 画面幅からbodyの左右margin (20px*2=40px) を引いた幅 */
-    margin: 0 auto; /* ここで中央寄せ */
+    max-width: 600px;
+    width: calc(100% - (var(--mobile-padding) * 2)); /* bodyの左右余白を考慮 */
+    margin: 0 auto;
     text-align: center;
     position: relative;
     z-index: 1;
-    min-height: auto; /* コンテンツ量に合わせて高さを調整 */
-    box-sizing: border-box; /* paddingを含めて幅を計算する */
+    min-height: auto;
+    box-sizing: border-box;
 }
 
 .header {
@@ -137,13 +137,13 @@ body::before {
 
 .futuristic-input {
     width: 100%;
-    max-width: 300px; /* 入力フィールドの最大幅 */
-    padding: 14px 18px;
+    max-width: 300px;
+    padding: 14px 18px; /* タップしやすいパディング */
     background-color: rgba(40, 40, 80, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--primary-color);
-    font-size: 1.1em;
+    font-size: 1.1em; /* モバイルでは少し小さく調整する場合あり */
     outline: none;
     transition: all 0.3s ease;
     box-shadow: inset 0 0 8px rgba(0, 230, 118, 0.1);
@@ -166,7 +166,7 @@ body::before {
     width: 100%;
     max-width: 350px;
     margin: 20px auto 0 auto;
-    padding: 15px 20px;
+    padding: 15px 20px; /* タップしやすいパディング */
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: var(--background-dark);
     border: none;
@@ -213,7 +213,7 @@ body::before {
     overflow: hidden;
     max-width: 400px;
     margin: 40px auto 0 auto;
-    box-sizing: border-box; /* paddingを含めて幅を計算する */
+    box-sizing: border-box;
 }
 
 .result-display::before {
@@ -258,4 +258,100 @@ body::before {
 .form-group:hover .input-label {
     color: var(--primary-color);
     text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* ==================================================================== */
+/* モバイルフレンドリーのためのメディアクエリ */
+/* 小さい画面 (例: スマートフォン縦向き, max-width: 480px) */
+@media screen and (max-width: 480px) {
+    body {
+        margin: var(--mobile-padding); /* bodyの余白を小さくする */
+    }
+
+    .container {
+        padding: 25px; /* コンテナ内部のパディングを小さくする */
+        border-radius: 15px; /* 角丸を少し小さくする */
+        width: calc(100% - (var(--mobile-padding) * 2)); /* bodyの余白に合わせて調整 */
+    }
+
+    .title {
+        font-size: 2.2em; /* タイトルフォントを小さく */
+    }
+
+    .tagline {
+        font-size: 1em; /* タグラインフォントを小さく */
+    }
+
+    .panel-title {
+        font-size: 1.4em; /* パネルタイトルフォントを小さく */
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    .input-grid {
+        gap: 20px; /* 入力グループ間のギャップを少し小さく */
+        margin-bottom: 25px;
+    }
+
+    .input-label {
+        font-size: 0.85em; /* ラベルフォントを小さく */
+    }
+
+    .futuristic-input {
+        padding: 12px 15px; /* 入力欄のパディングを少し小さく */
+        font-size: 1em; /* 入力欄フォントを調整 */
+        max-width: 280px; /* モバイルでの最大幅を調整 */
+    }
+
+    .futuristic-button {
+        padding: 12px 15px; /* ボタンのパディングを小さく */
+        font-size: 1.1em; /* ボタンのフォントを小さく */
+        max-width: 300px; /* モバイルでの最大幅を調整 */
+    }
+
+    .result-display {
+        margin-top: 30px;
+        padding: 15px; /* 結果表示部分のパディングを小さく */
+        max-width: 350px; /* モバイルでの最大幅を調整 */
+    }
+
+    .result-label {
+        font-size: 1.2em; /* 結果ラベルフォントを小さく */
+    }
+
+    .result-value {
+        font-size: 2em; /* 結果値フォントを小さく */
+    }
+}
+
+/* 中程度の画面 (例: タブレット縦向き, max-width: 768px) */
+@media screen and (max-width: 768px) and (min-width: 481px) {
+    body {
+        margin: 25px;
+    }
+
+    .container {
+        padding: 30px;
+        width: calc(100% - 50px); /* bodyの左右margin (25px*2=50px) を引いた幅 */
+    }
+
+    .title {
+        font-size: 2.5em;
+    }
+
+    .panel-title {
+        font-size: 1.5em;
+    }
+
+    .futuristic-input {
+        max-width: 320px;
+    }
+
+    .futuristic-button {
+        max-width: 380px;
+    }
+
+    .result-display {
+        max-width: 450px;
+    }
 }
